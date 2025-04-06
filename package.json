@@ -1,0 +1,42 @@
+{
+  "name": "@dmitriyzverev/toolkit",
+  "version": "0.0.0",
+  "description": "A development kit used within the \"@dmitriyzverev\" scope",
+  "homepage": "https://github.com/DmitriyZverev/toolkit",
+  "bugs": {
+    "url": "https://github.com/DmitriyZverev/toolkit/issues",
+    "email": "opensource@dmitriyzverev.ru"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Dmitriy Zverev",
+    "email": "opensource@dmitriyzverev.ru"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DmitriyZverev/toolkit.git"
+  },
+  "scripts": {
+    "build": "rm -rf .package && npx tsc --outDir .package && cp package.json LICENSE README.md .package",
+    "eslint:fix": "npx eslint --no-error-on-unmatched-pattern --fix --ext .ts,.js .",
+    "eslint:check": "npx eslint --no-error-on-unmatched-pattern --ext .ts,.js .",
+    "prettier:fix": "npx prettier --write \"**/*.{ts,js,json,yml,md}\"",
+    "prettier:check": "npx prettier --check \"**/*.{ts,js,json,yml,md}\"",
+    "test": "npx jest -c .jestconfig.json"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "@dmitriyzverev/eslint-config": "3.0.1",
+    "@dmitriyzverev/prettier-config": "2.0.0",
+    "@dmitriyzverev/typescript-config": "1.1.1",
+    "@types/jest": "29.5.14",
+    "@types/node": "22.14.0",
+    "eslint": "8.57.1",
+    "jest": "29.7.0",
+    "prettier": "3.5.3",
+    "ts-jest": "29.3.1",
+    "typescript": "5.8.3"
+  }
+}

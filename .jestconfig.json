@@ -1,0 +1,21 @@
+{
+  "preset": "ts-jest",
+  "transform": {
+    "^.+\\\\.ts$": [
+      "ts-jest",
+      {
+        "tsconfig": "test/tsconfig.json"
+      }
+    ]
+  },
+  "collectCoverageFrom": ["src/**/*.ts", "!src/**/*.test.ts"],
+  "coverageDirectory": "<rootDir>/.coverage/",
+  "coverageThreshold": {
+    "global": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  }
+}

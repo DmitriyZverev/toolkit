@@ -1,0 +1,7 @@
+{
+  "extends": ["@dmitriyzverev/eslint-config"],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": ["tsconfig.root.json"]
+  }
+}

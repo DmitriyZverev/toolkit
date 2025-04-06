@@ -1,0 +1,6 @@
+{
+  "extends": "@dmitriyzverev/typescript-config/tsconfig.lib.client.json",
+  "compilerOptions": {
+    "target": "es5"
+  }
+}
