@@ -18,10 +18,10 @@
   },
   "scripts": {
     "build": "rm -rf .package && npx tsc --outDir .package && cp package.json LICENSE README.md .package",
-    "eslint:fix": "npx eslint --no-error-on-unmatched-pattern --fix --ext .ts,.js .",
-    "eslint:check": "npx eslint --no-error-on-unmatched-pattern --ext .ts,.js .",
-    "prettier:fix": "npx prettier --write \"**/*.{ts,js,json,yml,md}\"",
-    "prettier:check": "npx prettier --check \"**/*.{ts,js,json,yml,md}\"",
+    "analyzer:fix": "npx eslint --no-error-on-unmatched-pattern --fix --ext .ts,.js .",
+    "analyzer:check": "npx eslint --no-error-on-unmatched-pattern --ext .ts,.js .",
+    "formatter:fix": "npx prettier --write \"**/*.{ts,js,json,yml,md}\"",
+    "formatter:check": "npx prettier --check \"**/*.{ts,js,json,yml,md}\"",
     "test": "npx jest -c .jestconfig.json"
   },
   "dependencies": {
