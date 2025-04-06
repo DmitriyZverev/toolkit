@@ -1,0 +1,6 @@
+name: Build package
+on:
+    - pull_request
+jobs:
+    build:
+        uses: DmitriyZverev/.github/.github/workflows/build.yml@v2.0.0-dev.0
