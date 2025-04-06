@@ -1,0 +1,6 @@
+name: Analyze code
+on:
+    - pull_request
+jobs:
+    analize:
+        uses: DmitriyZverev/.github/.github/workflows/analyze.yml@v2.0.0-dev.0
