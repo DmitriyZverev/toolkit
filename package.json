@@ -1,6 +1,6 @@
 {
   "name": "@dmitriyzverev/toolkit",
-  "version": "0.0.0",
+  "version": "1.0.0-dev.0",
   "description": "A development kit used within the \"@dmitriyzverev\" scope",
   "homepage": "https://github.com/DmitriyZverev/toolkit",
   "bugs": {
