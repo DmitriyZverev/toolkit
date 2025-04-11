@@ -1,0 +1,10 @@
+name: Publish package version
+on:
+    push:
+        tags:
+            - version/*
+jobs:
+    publish_version:
+        uses: DmitriyZverev/.github/.github/workflows/release.yml@v2.0.0-dev.0
+        with:
+            npm_token: ${{ secrets.NPM_TOKEN }}
