@@ -1,6 +1,8 @@
 {
-  "extends": "@dmitriyzverev/typescript-config/tsconfig.lib.client.json",
+  "extends": "@dmitriyzverev/typescript-config/tsconfig.lib.server.json",
   "compilerOptions": {
-    "target": "es5"
+    "target": "es2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
   }
 }
