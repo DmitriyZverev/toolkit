@@ -16,8 +16,12 @@
     "type": "git",
     "url": "https://github.com/DmitriyZverev/toolkit.git"
   },
+  "type": "module",
+  "bin": {
+    "toolkit": "bin/toolkit.js"
+  },
   "scripts": {
-    "build": "rm -rf .package && npx tsc --outDir .package && cp package.json LICENSE README.md .package",
+    "build": "rm -rf .package && npx tsc --outDir .package && cp package.json LICENSE README.md .package && chmod +x .package/bin/toolkit.js && rm -rf .package/bin/toolkit.d.ts",
     "analyzer:fix": "npx eslint --no-error-on-unmatched-pattern --fix --ext .ts,.js .",
     "analyzer:check": "npx eslint --no-error-on-unmatched-pattern --ext .ts,.js .",
     "formatter:fix": "npx prettier --write \"**/*.{ts,js,json,yml,md}\"",
@@ -25,7 +29,8 @@
     "test": "npx jest -c .jestconfig.json"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "2.8.1",
+    "yargs": "17.7.2"
   },
   "devDependencies": {
     "@dmitriyzverev/eslint-config": "3.0.1",

@@ -1,12 +1,15 @@
 {
-  "preset": "ts-jest",
   "transform": {
-    "^.+\\\\.ts$": [
+    "^.+\\.[tj]s$": [
       "ts-jest",
       {
-        "tsconfig": "test/tsconfig.json"
+        "tsconfig": "test/tsconfig.json",
+        "useESM": true
       }
     ]
+  },
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
   },
   "collectCoverageFrom": ["src/**/*.ts", "!src/**/*.test.ts"],
   "coverageDirectory": "<rootDir>/.coverage/",
