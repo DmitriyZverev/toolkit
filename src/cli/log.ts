@@ -1,4 +1,6 @@
-import {Log} from './runCli.js';
+export type LogType = 'error' | 'info' | 'debug';
+
+export type Log = (type: LogType, message: string) => void;
 
 export const defaultLog: Log = (type, message) => {
     /* eslint-disable no-console */

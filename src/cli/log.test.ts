@@ -1,4 +1,4 @@
-import {defaultLog} from './defaultLog.js';
+import {defaultLog} from './log.js';
 
 describe('defaultLog', () => {
     let consoleMock: jest.SpyInstance;

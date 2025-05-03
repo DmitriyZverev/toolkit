@@ -2,11 +2,7 @@ import path from 'node:path';
 
 import yargs, {type Argv, type ArgumentsCamelCase, type CommandModule} from 'yargs';
 
-import {defaultLog} from './defaultLog.js';
-
-export type LogType = 'error' | 'info' | 'debug';
-
-export type Log = (type: LogType, message: string) => void;
+import {defaultLog, type Log} from './log.js';
 
 export interface Process {
     readonly argv: string[];
