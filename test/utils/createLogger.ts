@@ -23,6 +23,7 @@ export const createLogger: CreateLogger = () => {
     };
 };
 
-export const error = (message: string) => Object.freeze({type: 'error', message});
-export const info = (message: string) => Object.freeze({type: 'info', message});
-export const debug = (message: string) => Object.freeze({type: 'debug', message});
+export const error = (message: string) => Object.freeze({type: 'error', message}) satisfies LogMessage;
+export const warning = (message: string) => Object.freeze({type: 'warning', message}) satisfies LogMessage;
+export const info = (message: string) => Object.freeze({type: 'info', message}) satisfies LogMessage;
+export const debug = (message: string) => Object.freeze({type: 'debug', message}) satisfies LogMessage;
