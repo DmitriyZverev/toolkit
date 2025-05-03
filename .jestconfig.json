@@ -21,7 +21,12 @@
   "moduleNameMapper": {
     "^(\\.{1,2}/.*)\\.js$": "$1"
   },
-  "collectCoverageFrom": ["src/**/*.ts", "!src/**/*.test.ts"],
+  "snapshotResolver": "<rootDir>/test/jest/snapshotResolver.ts",
+  "collectCoverageFrom": [
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
+    "!src/**/*.test.snap.ts"
+  ],
   "coverageDirectory": "<rootDir>/.coverage/",
   "coverageThreshold": {
     "global": {
