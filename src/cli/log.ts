@@ -1,7 +1,16 @@
+/**
+ * @public
+ */
 export type LogType = 'error' | 'warning' | 'info' | 'debug';
 
+/**
+ * @public
+ */
 export type Log = (type: LogType, message: string) => void;
 
+/**
+ * @public
+ */
 export const defaultLog: Log = (type, message) => {
     /* eslint-disable no-console */
     switch (type) {
