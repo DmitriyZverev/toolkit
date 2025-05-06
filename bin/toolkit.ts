@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import {runCli, defaultLog} from '../index.js';
+import {startCli, defaultLog} from '../index.js';
 
-runCli({commands: {}}).catch((err) => defaultLog('error', String(err)));
+startCli().catch((err) => defaultLog('error', String(err)));

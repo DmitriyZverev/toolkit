@@ -2,59 +2,33 @@ import path from 'node:path';
 
 import yargs, {type Argv, type ArgumentsCamelCase, type CommandModule} from 'yargs';
 
-import {defaultLog, type Log} from './log.js';
+import {type Log} from './log.js';
+import {type Process} from './process.js';
 
-/**
- * @public
- */
-export interface Process {
-    readonly argv: string[];
-    cwd(): string;
-    exit(code: number): void;
-}
-
-/**
- * @public
- */
 export interface RootArgs {
     readonly 'work-dir': string;
     readonly help: boolean;
     readonly version: boolean;
 }
 
-/**
- * @public
- */
 export type BuildCommand<PrevArgs extends RootArgs> = <Args extends PrevArgs>(
     commandDescriptor: NamedCommandDescriptor<PrevArgs, Args>,
 ) => CommandModule<PrevArgs, Args>;
 
-/**
- * @public
- */
 export type RootCommands<M extends Record<string, RootArgs>> = {
     [K in keyof M]: CommandDescriptor<RootArgs, M[K]>;
 };
 
-/**
- * @public
- */
 export interface RunCliArgs<M extends Record<string, RootArgs>> {
-    readonly process?: Process;
-    readonly log?: Log;
+    readonly process: Process;
+    readonly log: Log;
     readonly commands: RootCommands<M>;
 }
 
-/**
- * @public
- */
 export interface HandlerServices {
     readonly log: Log;
 }
 
-/**
- * @public
- */
 export interface CommandDescriptor<PrevArgs extends RootArgs, Args extends PrevArgs> {
     builder(params: {
         yargs: Argv<PrevArgs>;
@@ -67,17 +41,11 @@ export interface CommandDescriptor<PrevArgs extends RootArgs, Args extends PrevA
     readonly deprecated?: boolean;
 }
 
-/**
- * @public
- */
 export interface NamedCommandDescriptor<PrevArgs extends RootArgs, Args extends PrevArgs>
     extends CommandDescriptor<PrevArgs, Args> {
     readonly command: string;
 }
 
-/**
- * @public
- */
 export type RunCli = <M extends Record<string, RootArgs>>(args: RunCliArgs<M>) => Promise<void>;
 
 type CreateCommandModule = <PrevArgs extends RootArgs, Args extends PrevArgs>(params: {
@@ -94,8 +62,6 @@ class ValidationError extends Error {
         this.getHelp = getHelp;
     }
 }
-
-const defaultProcess = process;
 
 const createCommandModule: CreateCommandModule = ({commandDescriptor, services, builder}) => {
     return {
@@ -115,10 +81,8 @@ const createCommandModule: CreateCommandModule = ({commandDescriptor, services, 
 };
 
 export const describeCommand = <Args extends RootArgs>(desc: CommandDescriptor<RootArgs, Args>) => desc;
-/**
- * @public
- */
-export const runCli: RunCli = async ({process = defaultProcess, log = defaultLog, commands}) => {
+
+export const runCli: RunCli = async ({process, log, commands}) => {
     const argv = process.argv.slice(2);
     const cwd = process.cwd();
     const parentArgs = {
