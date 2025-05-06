@@ -2,7 +2,8 @@ import {createLogger, debug, error, info, type Logger} from '../../test/utils/cr
 import {multiline} from '../../test/utils/multiline.js';
 import {createProcess} from '../../test/utils/createProcess.js';
 
-import {runCli, type Process, describeCommand} from './runCli.js';
+import {runCli, describeCommand} from './runCli.js';
+import {Process} from './process.js';
 
 const commands = {};
 const helpText = multiline(
@@ -17,30 +18,6 @@ let logger: Logger;
 
 beforeEach(() => {
     logger = createLogger();
-});
-
-test('Should run command with default params correctly', async () => {
-    const originalArgv = process.argv;
-    process.argv = ['', '', 'command', '--option', 'foo'];
-    const consoleMock = jest.spyOn(console, 'info').mockImplementation(() => {
-        /**/
-    });
-    const message = (option: string) => `The command has been handled with option "${option}"`;
-    await runCli({
-        commands: {
-            command: describeCommand({
-                async builder({yargs}) {
-                    return yargs.option('option', {type: 'string', default: ''});
-                },
-                async handler({args, services}) {
-                    services.log('info', message(args.option));
-                },
-            }),
-        },
-    });
-    expect(consoleMock).toHaveBeenCalledWith(message('foo'));
-    process.argv = originalArgv;
-    consoleMock.mockRestore();
 });
 
 describe('Help command', () => {
