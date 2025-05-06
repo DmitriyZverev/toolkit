@@ -1,5 +1,5 @@
 import {defaultLog, type Log} from './log.js';
-import {runCli} from './runCli.js';
+import {createCli} from './createCli.js';
 import {defaultProcess, type Process} from './process.js';
 
 /**
@@ -19,9 +19,9 @@ export type StartCli = (args?: StartCliArgs) => Promise<void>;
  * @public
  */
 export const startCli: StartCli = ({process = defaultProcess, log = defaultLog} = {}) => {
-    return runCli({
+    return createCli({
         log,
         process,
         commands: {},
-    });
+    }).start();
 };

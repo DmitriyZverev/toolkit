@@ -2,7 +2,7 @@ import {createLogger, debug, error, info, type Logger} from '../../test/utils/cr
 import {multiline} from '../../test/utils/multiline.js';
 import {createProcess} from '../../test/utils/createProcess.js';
 
-import {runCli, describeCommand} from './runCli.js';
+import {createCli, describeCommand} from './createCli.js';
 import {Process} from './process.js';
 
 const commands = {};
@@ -23,14 +23,14 @@ beforeEach(() => {
 describe('Help command', () => {
     test('Should show help', async () => {
         const process: Process = createProcess(['--help']);
-        await runCli({process, log: logger.log, commands});
+        await createCli({process, log: logger.log, commands}).start();
         expect(logger.output).toStrictEqual([info(helpText)]);
         expect(process.exit).not.toHaveBeenCalled();
     });
 
     test('Should show help (alias -h)', async () => {
         const process: Process = createProcess(['-h']);
-        await runCli({process, log: logger.log, commands});
+        await createCli({process, log: logger.log, commands}).start();
         expect(logger.output).toStrictEqual([info(helpText)]);
         expect(process.exit).not.toHaveBeenCalled();
     });
@@ -40,7 +40,7 @@ describe('Version command', () => {
     test('Should show version number', async () => {
         const {default: packageJson} = await import('../../package.json');
         const process: Process = createProcess(['--version']);
-        await runCli({process, log: logger.log, commands});
+        await createCli({process, log: logger.log, commands}).start();
         expect(logger.output).toStrictEqual([info(packageJson.version)]);
         expect(process.exit).not.toHaveBeenCalled();
     });
@@ -48,7 +48,7 @@ describe('Version command', () => {
     test('Should show version number (alias -v)', async () => {
         const {default: packageJson} = await import('../../package.json');
         const process: Process = createProcess(['-v']);
-        await runCli({process, log: logger.log, commands});
+        await createCli({process, log: logger.log, commands}).start();
         expect(logger.output).toStrictEqual([info(packageJson.version)]);
         expect(process.exit).not.toHaveBeenCalled();
     });
@@ -59,14 +59,14 @@ describe('Error handling', () => {
 
     test('Should handle unknown command correctly', async () => {
         const process: Process = createProcess(['unknown-command']);
-        await runCli({process, log: logger.log, commands});
+        await createCli({process, log: logger.log, commands}).start();
         expect(logger.output).toStrictEqual([info(helpText), error('Unknown argument: unknown-command')]);
         expect(process.exit).toHaveBeenCalledWith(2);
     });
 
     test('Should catch error from failed command', async () => {
         const process: Process = createProcess(['command']);
-        await runCli({
+        await createCli({
             process,
             log: logger.log,
             commands: {
@@ -79,14 +79,14 @@ describe('Error handling', () => {
                     },
                 },
             },
-        });
+        }).start();
         expect(logger.output).toStrictEqual([error(message), debug(expect.any(String))]);
         expect(process.exit).toHaveBeenCalledWith(1);
     });
 
     test('Should catch unknown error from failed command', async () => {
         const process: Process = createProcess(['command']);
-        await runCli({
+        await createCli({
             process,
             log: logger.log,
             commands: {
@@ -99,7 +99,7 @@ describe('Error handling', () => {
                     },
                 },
             },
-        });
+        }).start();
         expect(logger.output).toStrictEqual([error(`Unknown error: ${message}`)]);
         expect(process.exit).toHaveBeenCalledWith(1);
     });
@@ -109,7 +109,7 @@ describe('Commands handling', () => {
     test('Should show command help', async () => {
         const process: Process = createProcess(['command', '--help']);
         const handler = jest.fn(() => Promise.resolve());
-        await runCli({
+        await createCli({
             process,
             log: logger.log,
             commands: {
@@ -121,7 +121,7 @@ describe('Commands handling', () => {
                     handler,
                 },
             },
-        });
+        }).start();
         expect(logger.output).toStrictEqual([
             info(
                 multiline(
@@ -141,7 +141,7 @@ describe('Commands handling', () => {
     test('Should handle command correctly', async () => {
         const process: Process = createProcess(['command', '--option', 'foo']);
         const message = (option: string) => `The command has been handled with option "${option}"`;
-        await runCli({
+        await createCli({
             process,
             log: logger.log,
             commands: {
@@ -154,7 +154,7 @@ describe('Commands handling', () => {
                     },
                 }),
             },
-        });
+        }).start();
         expect(logger.output).toStrictEqual([info(message('foo'))]);
         expect(process.exit).not.toHaveBeenCalled();
     });
@@ -165,7 +165,7 @@ describe('Subcommand handling', () => {
         const process: Process = createProcess(['command', 'subcommand', '--help']);
         const commandHandler = jest.fn(() => Promise.resolve());
         const subCommandHandler = jest.fn(() => Promise.resolve());
-        await runCli({
+        await createCli({
             process,
             log: logger.log,
             commands: {
@@ -191,7 +191,7 @@ describe('Subcommand handling', () => {
                     handler: commandHandler,
                 },
             },
-        });
+        }).start();
         expect(logger.output).toStrictEqual([
             info(
                 multiline(
@@ -215,7 +215,7 @@ describe('Subcommand handling', () => {
         const commandHandler = jest.fn(() => Promise.resolve());
         const message = (optionA: string, optionB: string) =>
             `The subcommand has been handled with optionA: "${optionA}" and optionB: "${optionB}"`;
-        await runCli({
+        await createCli({
             process,
             log: logger.log,
             commands: {
@@ -238,7 +238,7 @@ describe('Subcommand handling', () => {
                     handler: commandHandler,
                 },
             },
-        });
+        }).start();
         expect(logger.output).toStrictEqual([info(message('foo', 'bar'))]);
         expect(commandHandler).not.toHaveBeenCalled();
         expect(process.exit).not.toHaveBeenCalled();
