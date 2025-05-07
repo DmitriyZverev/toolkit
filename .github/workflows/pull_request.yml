@@ -4,32 +4,15 @@ on:
 jobs:
     analyze_code:
         name: Analyze code
-        uses: DmitriyZverev/.github/.github/workflows/analyze.yml@v2.0.0-dev.3
+        uses: DmitriyZverev/.github/.github/workflows/analyze.yml@v2.0.0-dev.4
     build:
         name: Build
-        uses: DmitriyZverev/.github/.github/workflows/build.yml@v2.0.0-dev.3
+        uses: DmitriyZverev/.github/.github/workflows/build.yml@v2.0.0-dev.4
     analyze_api:
         name: Analyze API
-        runs-on: ubuntu-22.04
         needs:
             - build
-        steps:
-            - name: Check out Git repository
-              uses: actions/checkout@v4.2.2
-            - name: Set up Node.js
-              uses: actions/setup-node@v4.4.0
-              with:
-                  node-version: 22
-                  cache: npm
-            - name: Install Node.js dependencies
-              run: npm ci
-            - name: Use built package
-              uses: actions/download-artifact@master
-              with:
-                  name: package
-                  path: ./.package/
-            - name: Analyze API
-              run: npm run analyzer:api:check
+        uses: DmitriyZverev/.github/.github/workflows/check_api.yml@v2.0.0-dev.4
     test:
         name: Test
-        uses: DmitriyZverev/.github/.github/workflows/test.yml@v2.0.0-dev.3
+        uses: DmitriyZverev/.github/.github/workflows/test.yml@v2.0.0-dev.4
