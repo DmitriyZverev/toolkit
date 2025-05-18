@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import yargs, {type ArgumentsCamelCase, type Argv, type CommandModule} from 'yargs';
 
-import type {Log} from './log.js';
+import type {Log} from './createLog.js';
 import type {Process} from './process.js';
 
 export interface RootArgs {
