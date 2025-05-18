@@ -1,4 +1,6 @@
 #!/usr/bin/env node
-import {startCli, defaultLog} from '../index.js';
+import {createToolkitCli} from '../index.js';
 
-startCli().catch((err) => defaultLog('error', String(err)));
+const toolkit = createToolkitCli();
+
+toolkit.start().catch((err) => toolkit.log('error', String(err)));
