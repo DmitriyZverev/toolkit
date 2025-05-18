@@ -1,3 +1,5 @@
+import {EOL} from 'node:os';
+
 import {createProcess} from '../../test/utils/createProcess.js';
 import {createLogger, info, Logger} from '../../test/utils/createLogger.js';
 import {multiline} from '../../test/utils/multiline.js';
@@ -23,11 +25,11 @@ describe('Help command', () => {
     test('Should display the help message correctly by default', async () => {
         const originalArgv = process.argv;
         process.argv = ['', '', '--help'];
-        const consoleMock = jest.spyOn(console, 'info').mockImplementation(() => undefined);
+        const stdoutMock = jest.spyOn(process.stdout, 'write').mockImplementation(() => true);
         await createToolkitCli().start();
-        expect(consoleMock).toHaveBeenCalledWith(helpText);
+        expect(stdoutMock).toHaveBeenCalledWith(helpText + EOL);
         process.argv = originalArgv;
-        consoleMock.mockRestore();
+        stdoutMock.mockRestore();
     });
 
     test('Should display the help message correctly', async () => {

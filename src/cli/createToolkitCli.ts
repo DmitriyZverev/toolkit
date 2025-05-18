@@ -1,4 +1,4 @@
-import {defaultLog, type Log} from './log.js';
+import {createLog, type Log} from './createLog.js';
 import {createCli} from './createCli.js';
 import {defaultProcess, type Process} from './process.js';
 
@@ -26,7 +26,9 @@ export type CreateToolkitCli = (args?: CreateToolkitCliArgs) => ToolkitCli;
 /**
  * @public
  */
-export const createToolkitCli: CreateToolkitCli = ({process = defaultProcess, log = defaultLog} = {}) => {
+export const createToolkitCli: CreateToolkitCli = (args = {}) => {
+    const process = args.process ?? defaultProcess;
+    const log = args.log ?? createLog({process});
     const cli = createCli({
         log,
         process,
