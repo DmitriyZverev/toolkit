@@ -2,7 +2,7 @@ import {createProcess} from '../../test/utils/createProcess.js';
 import {createLogger, info, Logger} from '../../test/utils/createLogger.js';
 import {multiline} from '../../test/utils/multiline.js';
 
-import {startCli} from './startCli.js';
+import {createToolkitCli} from './createToolkitCli.js';
 import {type Process} from './process.js';
 
 const helpText = multiline(
@@ -24,7 +24,7 @@ describe('Help command', () => {
         const originalArgv = process.argv;
         process.argv = ['', '', '--help'];
         const consoleMock = jest.spyOn(console, 'info').mockImplementation(() => undefined);
-        await startCli();
+        await createToolkitCli().start();
         expect(consoleMock).toHaveBeenCalledWith(helpText);
         process.argv = originalArgv;
         consoleMock.mockRestore();
@@ -32,10 +32,8 @@ describe('Help command', () => {
 
     test('Should display the help message correctly', async () => {
         const process: Process = createProcess(['--help']);
-        await startCli({
-            process,
-            log: logger.log,
-        });
+        const toolkit = createToolkitCli({process, log: logger.log});
+        await toolkit.start();
         expect(logger.output).toStrictEqual([info(helpText)]);
         expect(process.exit).not.toHaveBeenCalled();
     });
