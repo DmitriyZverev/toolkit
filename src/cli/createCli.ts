@@ -29,13 +29,20 @@ export interface HandlerServices {
     readonly log: Log;
 }
 
+export interface CommandHandlerArgs<Args> {
+    readonly args: ArgumentsCamelCase<NoInfer<Args>>;
+    readonly services: HandlerServices;
+}
+
+export type CommandHandler<Args> = (args: CommandHandlerArgs<Args>) => Promise<void>;
+
 export interface CommandDescriptor<PrevArgs extends RootArgs, Args extends PrevArgs> {
     builder(params: {
         yargs: Argv<PrevArgs>;
         builder: <NextArgs extends PrevArgs>(yargs: Argv<NextArgs>) => {command: BuildCommand<NoInfer<NextArgs>>};
         services: HandlerServices;
     }): Promise<Argv<Args>>;
-    handler(params: {args: ArgumentsCamelCase<NoInfer<Args>>; services: HandlerServices}): Promise<void>;
+    readonly handler: CommandHandler<Args>;
     readonly description?: string;
     readonly aliases?: readonly string[];
     readonly deprecated?: boolean;
