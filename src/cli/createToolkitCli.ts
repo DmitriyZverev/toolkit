@@ -1,6 +1,13 @@
+import defaultTs from 'typescript';
+
+import {defaultFs, Fs} from '../fs.js';
+import {buildPackage} from '../services/buildPackage.js';
+import {type Ts} from '../services/createComiler.js';
+
 import {createLog, type Log} from './createLog.js';
 import {createCli} from './createCli.js';
 import {defaultProcess, type Process} from './process.js';
+import {createBuildCommand} from './commands/package/commands/build/createBuildCommand.js';
 
 /**
  * @public
@@ -8,6 +15,8 @@ import {defaultProcess, type Process} from './process.js';
 export interface CreateToolkitCliArgs {
     readonly process?: Process;
     readonly log?: Log;
+    readonly fs?: Fs;
+    readonly ts?: Ts;
 }
 
 /**
@@ -29,10 +38,37 @@ export type CreateToolkitCli = (args?: CreateToolkitCliArgs) => ToolkitCli;
 export const createToolkitCli: CreateToolkitCli = (args = {}) => {
     const process = args.process ?? defaultProcess;
     const log = args.log ?? createLog({process});
+    const fs = args.fs ?? defaultFs;
+    const ts = args.ts ?? defaultTs;
     const cli = createCli({
         log,
         process,
-        commands: {},
+        commands: {
+            package: {
+                async builder({yargs, builder}) {
+                    return yargs.command(
+                        builder(yargs).command(
+                            createBuildCommand({
+                                async handler({args: {outDir, workDir, tsconfig: tsConfig}, services: {log}}) {
+                                    return buildPackage({
+                                        fs,
+                                        ts,
+                                        log,
+                                        outDir,
+                                        tsConfig,
+                                        workDir,
+                                    });
+                                },
+                            }),
+                        ),
+                    );
+                },
+                /* istanbul ignore next */
+                async handler() {
+                    /* ... */
+                },
+            },
+        },
     });
 
     return {

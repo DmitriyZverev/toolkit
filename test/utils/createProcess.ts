@@ -1,6 +1,6 @@
-import type {Process} from '../../index.js';
+import type {Process, ProcessEnv} from '../../index.js';
 
-export const createProcess = (argv: string[] = [], cwd: string = '/') => {
+export const createProcess = (argv: string[] = [], cwd: string = '/', env: ProcessEnv = {}) => {
     return {
         argv: ['', '', ...argv],
         cwd() {
@@ -13,5 +13,6 @@ export const createProcess = (argv: string[] = [], cwd: string = '/') => {
         stderr: {
             write: jest.fn(),
         },
+        env,
     } satisfies Process;
 };

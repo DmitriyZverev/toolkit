@@ -8,10 +8,18 @@ export interface ProcessWritableStream {
 /**
  * @public
  */
+export interface ProcessEnv {
+    readonly [key: string]: string | undefined;
+}
+
+/**
+ * @public
+ */
 export interface Process {
     readonly argv: string[];
     readonly stdout: ProcessWritableStream;
     readonly stderr: ProcessWritableStream;
+    readonly env: ProcessEnv;
     cwd(): string;
     exit(code: number): void;
 }
