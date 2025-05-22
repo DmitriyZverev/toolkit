@@ -26,7 +26,7 @@
     "toolkit": "bin/toolkit.js"
   },
   "scripts": {
-    "build": "rm -rf .package && npx tsc --outDir .package && cp package.json LICENSE README.md .package && chmod +x .package/bin/toolkit.js && rm -rf .package/bin/toolkit.d.ts",
+    "build": "npx toolkit package build",
     "analyzer:fix": "npx eslint --no-error-on-unmatched-pattern --fix --ext .ts,.js .",
     "analyzer:check": "npx eslint --no-error-on-unmatched-pattern --ext .ts,.js .",
     "analyzer:api:check": "npx api-extractor run --local --verbose",
@@ -44,6 +44,7 @@
   "devDependencies": {
     "@dmitriyzverev/eslint-config": "3.0.1",
     "@dmitriyzverev/prettier-config": "2.0.0",
+    "@dmitriyzverev/toolkit": "1.0.0-dev.2",
     "@dmitriyzverev/typescript-config": "1.1.1",
     "@microsoft/api-extractor": "7.52.7",
     "@types/jest": "29.5.14",
